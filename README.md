@@ -1,7 +1,8 @@
 # Pycvgram
 
-Pycvgram-lbph is a simple bot project using C# for execution 
-and Python with OpenCV library (4.0 or higher) for face processing.
+Pycvgram-lbph is a simple bot project using C# for Telegram.Bot API 
+and Python with OpenCV library (4.0 or higher) for face processing. Check out my another project for
+tutorial with face recognition process: https://github.com/bodpoch/spoofing-protected-lbph-opencv.
 
 # Files
 
@@ -15,16 +16,22 @@ and Python with OpenCV library (4.0 or higher) for face processing.
 
 **Rec_IMG_LBPH_DLD.py** Script to recognise faces in the sample image using Deep Learning detection and LBPH
 
+**MYIMG.jpg:** sample image
+
+**OUTIMG.jpg:** processed image
+
+**Names.txt:** contains ID and NAME of all persons in the database
+
 **res10_300x300_ssd_iter_140000.caffemodel** pre-trained caffe framework model for face detection
 
 # Folders
 
-**photodb** --> Contains the images that will be used to train the recogniser
+**photodb:** Contains the images that will be used to train the recogniser
 
-**Haar** --> Contains Haar Cascades of OpenCV used in the applications
+**Haar:** Contains Haar Cascades of OpenCV used in the applications
 
-**recondata** --> Contains the saved XML file with LBPH training data
+**recondata:** Contains the saved XML file with LBPH training data
 
-**packages** --> Nuget Telegram Api packages
+**packages:** Nuget Telegram Api packages
 
-**TeleFace** --> Telegram Bot App folder
+**TeleFace:** Telegram Bot App folder
