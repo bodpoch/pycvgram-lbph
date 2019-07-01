@@ -6,14 +6,16 @@ import  time
 
 now_time = time.clock()
 
-face = cv2.CascadeClassifier('Haar/haarcascade_frontalface_alt2.xml')
-glass_cas = cv2.CascadeClassifier('Haar/haarcascade_eye_tree_eyeglasses.xml')
+filepath = ('YOURFILEPATH')
+
+face = cv2.CascadeClassifier(filepath + 'Haar/haarcascade_frontalface_alt2.xml')
+glass_cas = cv2.CascadeClassifier(filepath + 'Haar/haarcascade_eye_tree_eyeglasses.xml')
 
 WHITE = [255, 255, 255]
 RED = [255, 0, 0]
 
 def FileRead():
-    Info = open("C:/defold/pycvgram/Names.txt", "r")                       # Open th text file in readmode
+    Info = open(filepath + "Names.txt", "r")                       # Open th text file in readmode
     NAME = []                                           # The tuple to store Names
     while (True):                                       # Read all the lines in the file and store them in two tuples
         Line = Info.readline()

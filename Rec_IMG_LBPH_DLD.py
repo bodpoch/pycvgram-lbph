@@ -7,11 +7,13 @@ from imutils.video import VideoStream
 import imutils
 from PIL import Image
 
+filepath = ('YOURFILEPATH')
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-p", "--prototxt", required=True, help="path to Caffe 'deploy' prototxt file")
 ap.add_argument("-m", "--model", required=True, help="path to Caffe pre-trained model")
 ap.add_argument("-c", "--confidence", type=float, default=0.5, help="minimum probability to filter weak detections")
-args = vars(ap.parse_args(['-p', 'C:/defold/pycvgram/deploy.prototxt.txt', '-m' 'C:/defold/pycvgram/res10_300x300_ssd_iter_140000.caffemodel']))
+args = vars(ap.parse_args(['-p', filepath + 'deploy.prototxt.txt', '-m', filepath + 'res10_300x300_ssd_iter_140000.caffemodel']))
 
 # load our serialized model from disk
 net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
@@ -19,11 +21,11 @@ net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
 # FACE RECOGNISER OBJECT
 LBPH = cv2.face.LBPHFaceRecognizer_create(2, 8, 8, 8, 15)
 # Load the training data from the trainer to recognise the faces
-LBPH.read("C:/defold/pycvgram/recondata/trainingDataLBPH.xml")
+LBPH.read(filepath + "recondata/trainingDataLBPH.xml")
 
 # ------------------------------------  PHOTO INPUT  -----------------------------------------------------
 
-frame = cv2.imread('C:/defold/pycvgram/MYIMG.jpg')  # ------->>> THE ADDRESS TO THE PHOTO
+frame = cv2.imread(filepath + 'MYIMG.jpg')  # ------->>> THE ADDRESS TO THE PHOTO
 
 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  # Convert the Camera to gray
 # grab the frame dimensions and convert it to a blob
@@ -54,9 +56,9 @@ for i in range(0, detections.shape[2]):
     if (confidence > 0.7):
         cv2.rectangle(gray, (startX, startY), (endX, endY),
                   color, stroke)
-        cv2.imwrite('MYIMG.jpg', roi_gray)
+        cv2.imwrite(filepath + 'MYIMG.jpg', roi_gray)
 
-        imgtomod = Image.open('MYIMG.jpg')
+        imgtomod = Image.open(filepath + 'MYIMG.jpg')
         width = imgtomod.size[0]
         height = imgtomod.size[1]
         ideal_width = 150
@@ -69,15 +71,15 @@ for i in range(0, detections.shape[2]):
             new_width = int(ideal_aspect * height)
             offset = int((width - new_width) / 2)
             thumb = imgtomod.crop((offset, 0, width - offset, height)).resize((ideal_width, ideal_height), Image.ANTIALIAS)
-            thumb.save('pre.jpg')
+            thumb.save(filepath + 'pre.jpg')
         else:
             # ... crop the top and bottom:
             new_height = int(width / ideal_aspect)
             offset = int((height - new_height) / 2)
             thumb = imgtomod.crop((0, offset, width, (height - offset))).resize((ideal_width, ideal_height), Image.ANTIALIAS)
-            thumb.save('pre.jpg')
+            thumb.save(filepath + 'pre.jpg')
 
-        roi_mod = cv2.imread('pre.jpg')
+        roi_mod = cv2.imread(filepath + 'pre.jpg')
         roi_mod = cv2.cvtColor(roi_mod, cv2.COLOR_BGR2GRAY)
         #cv2.putText(gray, text, (startX, y),
         #                cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
@@ -89,7 +91,7 @@ for i in range(0, detections.shape[2]):
             print('\U000026A0 ID: ', ID, NAME, '|', "{:.2f}".format(100 - ((conf - 1) / (confval - 1)) * 100), ' %')
             cv2.putText(gray, NAME, (startX, y),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
-            # NameFind.DispID(startX, startY, endX, endY, NAME, gray)                
+            # NameFind.DispID(startX, startY, endX, endY, NAME, gray)
         else:
             print('\U0000274C Not recognised')
             NAME = NameFind.ID2Name(0, conf)
@@ -100,5 +102,5 @@ for i in range(0, detections.shape[2]):
        #for (ex, ey, ew, eh) in eyes:
 
 cv2.imshow('LBPH Photo Recogniser', gray)  # IMAGE DISPLAY
-cv2.imwrite('C:/defold/pycvgram/OUTIMG.jpg', gray)
+cv2.imwrite(filepath + 'OUTIMG.jpg', gray)
 cv2.destroyAllWindows()
